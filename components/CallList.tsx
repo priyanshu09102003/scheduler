@@ -79,61 +79,6 @@ const MeetingOptions = () => {
         
     }
 
-    // Function to handle joining a meeting
-    const handleJoinMeeting = () => {
-        if (!values.link) {
-            toast.error("Please enter a meeting link");
-            return;
-        }
-
-        try {
-            let cleanLink = values.link.trim();
-            
-            // Check if it's a full URL with protocol
-            if (cleanLink.startsWith('http://') || cleanLink.startsWith('https://')) {
-                const url = new URL(cleanLink);
-                const path = url.pathname + url.search; // Include query parameters
-                router.push(path);
-            } 
-            // Check if it's a domain without protocol (like sensaischeduler.vercel.app/meeting/...)
-            else if (cleanLink.includes('.vercel.app') || cleanLink.includes('.com') || cleanLink.includes('.net') || cleanLink.includes('.') && cleanLink.includes('/')) {
-                // Extract everything after the domain
-                const parts = cleanLink.split('/');
-                const domainIndex = parts.findIndex(part => part.includes('.'));
-                if (domainIndex !== -1 && domainIndex < parts.length - 1) {
-                    const pathParts = parts.slice(domainIndex + 1);
-                    const path = '/' + pathParts.join('/');
-                    router.push(path);
-                } else {
-                    // Fallback: try to find meeting path
-                    const meetingIndex = cleanLink.indexOf('/meeting/');
-                    if (meetingIndex !== -1) {
-                        const path = cleanLink.substring(meetingIndex);
-                        router.push(path);
-                    } else {
-                        throw new Error('Invalid link format');
-                    }
-                }
-            }
-            // Check if it's already a path
-            else if (cleanLink.startsWith('/')) {
-                router.push(cleanLink);
-            } 
-            // Handle meeting ID or partial path
-            else {
-                cleanLink = cleanLink.replace(/^\/+/, ''); // Remove leading slashes
-                if (cleanLink.startsWith('meeting/')) {
-                    router.push(`/${cleanLink}`);
-                } else {
-                    router.push(`/meeting/${cleanLink}`);
-                }
-            }
-        } catch (error) {
-            console.error('Error parsing meeting link:', error);
-            toast.error("Invalid meeting link format");
-        }
-    };
-
     const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${callDetails?.id}`
 
   return (
@@ -250,7 +195,7 @@ const MeetingOptions = () => {
         title = "Enter the Meeting Link"
         className = "text-center"
         buttonText = "Join Meeting"
-        handleClick = {handleJoinMeeting}
+        handleClick = {() => router.push(values.link)}
         > 
 
         <Input 
