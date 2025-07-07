@@ -87,18 +87,41 @@ const MeetingOptions = () => {
         }
 
         try {
-            // Check if the link is a full URL or just a path
-            if (values.link.startsWith('http')) {
-                // It's a full URL, extract the path
-                const url = new URL(values.link);
-                const path = url.pathname;
+            let cleanLink = values.link.trim();
+            
+            // Check if it's a full URL with protocol
+            if (cleanLink.startsWith('http://') || cleanLink.startsWith('https://')) {
+                const url = new URL(cleanLink);
+                const path = url.pathname + url.search; // Include query parameters
                 router.push(path);
-            } else if (values.link.startsWith('/')) {
-                // It's already a path, use it directly
-                router.push(values.link);
-            } else {
-                // It might be just the meeting ID or partial path
-                const cleanLink = values.link.replace(/^\/+/, ''); // Remove leading slashes
+            } 
+            // Check if it's a domain without protocol (like sensaischeduler.vercel.app/meeting/...)
+            else if (cleanLink.includes('.vercel.app') || cleanLink.includes('.com') || cleanLink.includes('.net') || cleanLink.includes('.') && cleanLink.includes('/')) {
+                // Extract everything after the domain
+                const parts = cleanLink.split('/');
+                const domainIndex = parts.findIndex(part => part.includes('.'));
+                if (domainIndex !== -1 && domainIndex < parts.length - 1) {
+                    const pathParts = parts.slice(domainIndex + 1);
+                    const path = '/' + pathParts.join('/');
+                    router.push(path);
+                } else {
+                    // Fallback: try to find meeting path
+                    const meetingIndex = cleanLink.indexOf('/meeting/');
+                    if (meetingIndex !== -1) {
+                        const path = cleanLink.substring(meetingIndex);
+                        router.push(path);
+                    } else {
+                        throw new Error('Invalid link format');
+                    }
+                }
+            }
+            // Check if it's already a path
+            else if (cleanLink.startsWith('/')) {
+                router.push(cleanLink);
+            } 
+            // Handle meeting ID or partial path
+            else {
+                cleanLink = cleanLink.replace(/^\/+/, ''); // Remove leading slashes
                 if (cleanLink.startsWith('meeting/')) {
                     router.push(`/${cleanLink}`);
                 } else {
