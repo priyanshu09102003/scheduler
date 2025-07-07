@@ -11,13 +11,11 @@
 - [🧠 About SensAI Scheduler](#-about-sensai-scheduler)
 - [⚙️ Tech Stack](#️-tech-stack)
 - [🔋 Features](#-features)
-- [🎯 SensAI Integration](#-sensai-integration)
 - [🤸 Quick Start](#-quick-start)
-- [🔧 Configuration](#-configuration)
+- [🔧 Third Party Services](#-third-party-services)
 - [📱 Usage](#-usage)
 - [🚀 Deployment](#-deployment)
 - [🤝 Contributing](#-contributing)
-- [📄 License](#-license)
 
 ---
 
@@ -129,20 +127,6 @@ This module leverages **artificial intelligence** to optimize meeting experience
 
 ---
 
-## 🎯 SensAI Integration
-
-SensAI Scheduler is designed as a **core module** of the SensAI ecosystem:
-
-| **Integration Feature** | **Description** |
-|-------------------------|-----------------|
-| **🎨 Unified User Experience** | Seamless navigation between SensAI main app and scheduler |
-| **🔑 Shared Authentication** | Single sign-on across all SensAI modules |
-| **🔄 Data Synchronization** | Real-time sync with SensAI's main database and user profiles |
-| **🧠 AI Integration** | Leverages SensAI's core AI capabilities for meeting optimization |
-| **📊 Unified Analytics** | Meeting data contributes to SensAI's comprehensive user insights |
-
----
-
 ## 🤸 Quick Start
 
 ### 📋 Prerequisites
@@ -207,26 +191,7 @@ Navigate to **http://localhost:3000** to see SensAI Scheduler in action! 🎉
 
 ---
 
-## 🔧 Configuration
-
-### 🎯 SensAI Integration Setup
-
-**1. Configure SensAI API Connection**
-- 🔑 Obtain API credentials from your SensAI dashboard
-- 🔗 Set up webhook endpoints for real-time synchronization
-- 👤 Configure user role mappings
-
-**2. Database Integration**
-- 🗄️ Connect to SensAI's main database or set up dedicated scheduler database
-- 🔄 Run database migrations: `npm run db:migrate`
-- 🌱 Seed initial data: `npm run db:seed`
-
-**3. AI Features Configuration**
-- 🧠 Set up face recognition training models
-- 📊 Configure meeting analytics pipelines
-- ⚡ Enable smart scheduling algorithms
-
-### 🔧 Third-party Services
+## 🔧 Third Party Services
 
 **1. Clerk Authentication**
 - 🌐 Create a Clerk application at [clerk.com](https://clerk.com)
