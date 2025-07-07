@@ -79,6 +79,38 @@ const MeetingOptions = () => {
         
     }
 
+    // Function to handle joining a meeting
+    const handleJoinMeeting = () => {
+        if (!values.link) {
+            toast.error("Please enter a meeting link");
+            return;
+        }
+
+        try {
+            // Check if the link is a full URL or just a path
+            if (values.link.startsWith('http')) {
+                // It's a full URL, extract the path
+                const url = new URL(values.link);
+                const path = url.pathname;
+                router.push(path);
+            } else if (values.link.startsWith('/')) {
+                // It's already a path, use it directly
+                router.push(values.link);
+            } else {
+                // It might be just the meeting ID or partial path
+                const cleanLink = values.link.replace(/^\/+/, ''); // Remove leading slashes
+                if (cleanLink.startsWith('meeting/')) {
+                    router.push(`/${cleanLink}`);
+                } else {
+                    router.push(`/meeting/${cleanLink}`);
+                }
+            }
+        } catch (error) {
+            console.error('Error parsing meeting link:', error);
+            toast.error("Invalid meeting link format");
+        }
+    };
+
     const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL}/meeting/${callDetails?.id}`
 
   return (
@@ -195,7 +227,7 @@ const MeetingOptions = () => {
         title = "Enter the Meeting Link"
         className = "text-center"
         buttonText = "Join Meeting"
-        handleClick = {() => router.push(values.link)}
+        handleClick = {handleJoinMeeting}
         > 
 
         <Input 
